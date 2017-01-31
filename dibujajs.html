@@ -58,6 +58,10 @@
                 }
 
             }
+            
+            function llenaArrayLetraK(n, m){
+                
+            }
 
             function llenaArray(m, n){
                 for (var f = n; f > 0; f--){
@@ -99,6 +103,15 @@
 
                 var cad = ""
 
+                
+            }
+            
+            $scope.dibujaLetraK = function(){
+                console.log("dibuja letra K");
+                model.matrix = CraeaArray(model.numc);
+                var n = model.numc;
+                
+                llenaArrayLetraK(model.matrix, n);
                 
             }
         });

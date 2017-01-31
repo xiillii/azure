@@ -60,13 +60,15 @@
             }
             
             function llenaArrayLetraK(n, m){
-                
+                for (var f = n; f > 0; f--){
+                    for (var c = n; c > 0; c--){
+                        
             }
 
             function llenaArray(m, n){
                 for (var f = n; f > 0; f--){
                     for (var c = n; c > 0; c--){
-                        if (f == c){
+                        if (1 == c){
                             m[n - f][n - c] = f;
                             m[n + f - 2][n - c] = f;
                         }

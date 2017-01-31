@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html ng-app="dibjsApp">
+
+<head>
+    <title>Dibuja con JS</title>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <style>
+        .fijo{
+            font-family: Courier New, Courier, monospace;
+        }
+    </style>
+    <script>
+        model = {
+            numc:4,
+            matrix: []
+        };
+
+        var app = angular.module("dibjsApp", []);
+
+        app.controller("mainCtrl", function($scope){
+            $scope.datos = model;
+
+            function CrearArray(n){
+
+                var arr = [];
+                for (var i = 0; i < n * 2 - 1; i++){
+                    arr[i] = [];
+                }
+
+                return arr;
+            }
+            
+
+            $scope.dibuja = function(){
+                console.log("numero de caracteres: ", model.numc);
+                var d = document.getElementById('area');
+                d.innerHTML = "";
+                // lado horizontal arriba
+                for (var i = 0; i < model.numc; i++){
+                    d.innerHTML += "*";
+                }
+                d.innerHTML += "<br />";
+                // lados verticales
+                for (var i = 0; i < model.numc - 2; i++){
+                    d.innerHTML += "*";
+                    for (var j = 0; j < model.numc - 2; j++){
+                        d.innerHTML += "&nbsp";
+                    }
+                    d.innerHTML += "*<br />";
+                }
+                // lado horizontal abajo
+                for (var i = 0; i < model.numc; i++){
+                    d.innerHTML += "*";
+                }
+
+            }
+
+            function llenaArray(m, n){
+                for (var f = n; f > 0; f--){
+                    for (var c = n; c > 0; c--){
+                        if (f == c){
+                            m[n - f][n - c] = f;
+                            m[n + f - 2][n - c] = f;
+                        }
+                        else{
+                            // m[n - f][n - c] = "&nbsp";
+                            // m[n + f - 2][n - c] = "&nbsp";
+                        }
+                    }
+
+                    for (var c = 0; c < n - 1; c++){
+                        if (f == c + 2){
+                            m[n - f][n + c] = f;
+                            m[n + f - 2][n + c] = f;
+                        }
+                        else{
+                            // m[n - f][n + c] = "&nbsp";
+                            // m[n + f - 2][n + c] = "&nbsp";
+                        }
+                    }
+                }
+            }
+
+            function pintaArray(m, n, doc){
+                doc.innerHTML = "<table>"
+                
+            }
+
+            $scope.dibujaLetraX = function(){
+                console.log("Dibuja la X")
+                model.matrix = CrearArray(model.numc);
+                var n = model.numc;
+
+                llenaArray(model.matrix, n);
+
+                var cad = ""
+
+                // pintaArray(model.matrix, n, document.getElementById('area'))
+                
+                // for (var f = n; f > 0; f--){
+                //     for (var c = n; c > 0; c--){
+                //         if (f == c){
+                //             model.matrix[n - f][n - c] = f;
+                //         }
+                //         else{
+                //             model.matrix[n - f][n - c] = "&nbsp";
+                //         }
+                //     }
+
+                //     for (var c = 0; c < n - 1; c++){
+                //         if (f == c + 2){
+                //             model.matrix[n - f][n + c] = f;
+                //         }
+                //         else{
+                //             model.matrix[n - f][n + c] = "&nbsp";
+                //         }
+                //     }
+                // }
+            }
+        });
+    </script>
+</head>
+
+<body ng-controller="mainCtrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h1>Dibuja</h1></div>
+                </div>
+                <div class="panel panel-body">
+                    <label for="cantidad">Cantidad para dibujar</label>
+                    <div class="input-group">
+                        <input id="cantidad" name="cantidad" type="number" class="form-control" ng-model="datos.numc">
+                        <span class="input-group-btn">
+                            <!--<a ng-click="dibuja()" class="btn btn-primary">Dibuja</a>-->
+                            <a ng-click="dibujaLetraX()" class="btn btn-success">Dibuja letra X</a>
+                            <a ng-click="dibujaLetraX()" class="btn btn-primary">Dibuja letra K</a>
+                        </span>
+                    </div>
+                </div>
+                <h3>
+                <label class="label label-primary">Figura con el número {{datos.numc}}</label>
+                </h3>
+                <div class="panel panel-body fijo" id="area" name="area">
+                    <table>
+                        <tr ng-repeat="f in datos.matrix">
+                            <td ng-repeat="x in f track by $index">
+                                {{x}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

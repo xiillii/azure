@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html ng-app="tareasApp">
+<head>
+	<title>Lista de tareas</title>
+	<link href="bootstrap.css" rel="stylesheet"/>
+	<link href="bootstrap-theme.css" rel="stylesheet">
+	<script src="angular.js"></script>
+	<script>
+		// Modelo
+		var model={
+			user:"José"
+		};
+		
+
+		var tApp=angular.module("tareasApp", []);
+
+		tApp.factory('miServicio', function($http){
+			return{
+				getFoo:function(){
+					return $http.get('tareas.json').then(function(result){
+						return result.data;
+					});
+				}
+			}
+		});
+
+		
+		tApp.filter("checkedItems", function(){
+			return function(items, showComplete){
+				var resultArr = [];
+				angular.forEach(items, function(item){
+					if (item.done == false || showComplete == true) {
+						resultArr.push(item);
+					}
+				});
+				return resultArr;
+			}
+		})
+
+		// Controlador
+		tApp.controller("TareasCtrl", function($scope, miServicio){
+			miServicio.getFoo().then(function(data){
+				model.items = data;
+				console.log("data: ", data);
+			});
+
+			$scope.tareas = model;
+
+			$scope.incompleteCount = function(){
+				var count = 0;
+				angular.forEach($scope.tareas.items, function(item){
+					if (!item.done){
+						count++;
+					}
+				});
+				return count;
+			}
+
+			$scope.warningLevel = function(){
+				return $scope.incompleteCount() < 3 ? "label-success" : "label-warning";
+			}
+
+			$scope.addNewItem = function(actionText){
+				$scope.tareas.items.push({action:actionText, done:false});
+			}
+		});
+	</script>
+</head>
+<body ng-controller="TareasCtrl">
+	<div class="page-header">
+		<h1>
+			Tareas de {{tareas.user}}
+			<span class="label label-default" ng-class="warningLevel()" ng-hide="incompleteCount() == 0">
+				{{incompleteCount()}}
+			</span>
+		</h1>
+	</div>
+	<div class="panel">
+		<div class="input-group">
+			<input class="form-control" ng-model="actionText"/>
+			<span class="input-group-btn">
+				<button class="btn btn-primary"
+					ng-click="addNewItem(actionText)">Agregar</button>
+			</span>	
+		</div>
+		<table class="table table-stripped table-condensed">
+			<thead>
+				<tr>
+					<th>Descripcion</th>
+					<th>Hecho</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in tareas.items | checkedItems:showComplete | orderBy:'action'">
+					<td>{{item.action}}</td>
+					<td><input type="checkbox" ng-model="item.done"/></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="checkbox-inline">
+			<label><input type="checkbox" ng-model="showComplete" />Mostrar Todos</label>
+		</div>
+	</div>
+</body>
+</html>

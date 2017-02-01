@@ -4,8 +4,8 @@
 <head>
     <title>Dibuja con JS</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     <style>
@@ -58,19 +58,11 @@
                 }
 
             }
-            
-            function llenaArrayLetraK(n, m){
-                for (var f = n; f > 0; f--){
-                    for (var c = n; c > 0; c--){
-                    }
-                }
-                        
-            }
 
             function llenaArray(m, n){
                 for (var f = n; f > 0; f--){
                     for (var c = n; c > 0; c--){
-                        if (1 == c){
+                        if (f == c){
                             m[n - f][n - c] = f;
                             m[n + f - 2][n - c] = f;
                         }
@@ -95,16 +87,7 @@
 
             function llenaArrayLetraK(m, n){
                 for (var f = n; f > 0; f--){
-                    // for (var c = n; c > 0; c--){
-                    //     if (f == c){
-                    //         m[n - f][n - c] = f;
-                    //         m[n + f - 2][n - c] = f;
-                    //     }
-                    //     else{
-                    //         // m[n - f][n - c] = "&nbsp";
-                    //         // m[n + f - 2][n - c] = "&nbsp";
-                    //     }
-                    // }
+                    
                     m[n-f][0] = f;
                     m[n+f-2][0] = f;
 
@@ -136,15 +119,6 @@
                 model.matrix = CrearArray(model.numc);
 
                 llenaArrayLetraK(model.matrix, model.numc);                
-            }
-            
-            $scope.dibujaLetraK = function(){
-                console.log("dibuja letra K");
-                model.matrix = CraeaArray(model.numc);
-                var n = model.numc;
-                
-                llenaArrayLetraK(model.matrix, n);
-                
             }
         });
     </script>
@@ -183,7 +157,5 @@
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
